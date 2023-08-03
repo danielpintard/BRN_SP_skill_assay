@@ -67,7 +67,8 @@ def cpu_turn(cpu_symbol, usr_symbol):
                 break
         except ValueError:
             continue 
-      
+    
+ 
         
 def end_game(symbol): 
     for i in range(3):
@@ -76,12 +77,12 @@ def end_game(symbol):
         if all(board[i][j] == symbol for j in range(3)) or all(board[j][i] == symbol for j in range(3)):
             global game_over
             game_over = True
-            print('Game over' + symbol + 'wins!')
+            print('Game over! ' + symbol + ' wins!')
         
     # Check diagonals for a win
     if all(board[i][i] == symbol for i in range(3)) or all(board[i][2 - i] == symbol for i in range(3)):
         game_over = True
-        print('Game over ' + symbol + ' wins!')
+        print('Game over! ' + symbol + ' wins!')
         
     return game_over
 
@@ -93,11 +94,14 @@ def usr_go_first(usr_symbol, cpu_symbol):
     while game_over == False:    
         usr_turn(usr_symbol)
         end_game(usr_symbol)
+        if game_over:
+            continue
         time.sleep(1)
         cpu_turn(cpu_symbol, usr_symbol)
         end_game(cpu_symbol)
-        if game_over == True:
+        if game_over:
             break
+        
         
 
 def cpu_go_first(usr_symbol, cpu_symbol):
@@ -146,5 +150,5 @@ play_game()
 # 1. the turn based game loop - whenever the user plays as 'X', the cpu always ends up needing to take another turn even though the game is essentially done
 #    - this is essentially working how I would like it to, so I would just need to find a way to cancel the cpu_turn() and probably even the usr_turn() function AS SOON as game_over = True
 # 2. I would like to implement some heading so that each round of the game can be distinguished and easy to determine in the terminal. This will be the ultimate beautifying effect for the game
-
+# 3. I could consider making the cpu_turn() function smarter, but I don't know how serious that may be. If I make it any smarter, is there a way to avoid falling down a m,n,k game theory rabbit hole 😬? 
 # with this being the case, I may shift to the other parts of the assesment just to get a jumpstart since I'm still stuck on this part. But before the, lets spend some time thinking deeply about how to treat issue #1 (this may require some archetectural redesign)
